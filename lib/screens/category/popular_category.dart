@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan_shop_app/screens/category/popular_category_product_details.dart';
 import 'package:plan_shop_app/screens/category/popular_product_class.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -23,7 +24,14 @@ class _PopularCategoryState extends State<PopularCategory> {
       itemBuilder: (context, index) {
         final popularProduct = product[index];
         return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PopularCategoryProductDetails(
+                            product: popularProduct,
+                          )));
+            },
             child: Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -45,16 +53,19 @@ class _PopularCategoryState extends State<PopularCategory> {
                                 width: 80,
                                 decoration: BoxDecoration(
                                     color: Colors.grey.shade300,
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.elliptical(100, 25))),
                               ),
                             ),
                           ),
                           Center(
-                              child: Image.asset(
-                            popularProduct.image,
-                            width: 200,
-                            fit: BoxFit.cover,
+                              child: Hero(
+                            tag: popularProduct.image,
+                            child: Image.asset(
+                              popularProduct.image,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
                           )),
                         ],
                       ),
@@ -70,18 +81,21 @@ class _PopularCategoryState extends State<PopularCategory> {
                         child: Align(
                           alignment: Alignment.topRight,
                           child: Container(
-                            padding: EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 color: popularProduct.isFavourite
                                     ? Colors.pink.shade50
                                     : Colors.grey.shade400),
-                            child: Icon(
-                              Icons.favorite_outline,
-                              color: popularProduct.isFavourite
-                                  ? Colors.red
-                                  : Colors.black,
-                            ),
+                            child: popularProduct.isFavourite
+                                ? const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  )
+                                : const Icon(
+                                    Icons.favorite_outline,
+                                    color: Colors.black,
+                                  ),
                           ),
                         ),
                       ),

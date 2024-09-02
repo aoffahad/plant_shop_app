@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
             /// Search  Box
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
+              padding: EdgeInsets.only(top: 30),
               child: Row(
                 children: [
                   searchField(),
