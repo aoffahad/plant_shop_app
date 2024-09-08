@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:plan_shop_app/screens/category/popular_category_product_details.dart';
-import 'package:plan_shop_app/screens/category/popular_product_class.dart';
+import 'package:plan_shop_app/models/popular_product_class.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
+
+import '../../helpers/sql_helpers.dart';
 
 class PopularCategory extends StatefulWidget {
   const PopularCategory({super.key});
@@ -13,6 +15,8 @@ class PopularCategory extends StatefulWidget {
 
 class _PopularCategoryState extends State<PopularCategory> {
   int selectedIndex = 0;
+  final dbHelper = DatabaseHelper.instance;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -72,11 +76,35 @@ class _PopularCategoryState extends State<PopularCategory> {
 
                       /// Favourite Icon
                       GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            popularProduct.isFavourite =
-                                !popularProduct.isFavourite;
-                          });
+                        onTap: () async {
+                          try {
+                            if (popularProduct.isFavourite) {
+                              print("popular item delete");
+                              // Remove data first
+                              await dbHelper.delete(popularProduct.image);
+                            } else {
+                              print("popular item insert");
+                              // Insert data first
+                              await dbHelper.insert({
+                                DatabaseHelper.columnTitle:
+                                    popularProduct.title,
+                                DatabaseHelper.columnImage:
+                                    popularProduct.image,
+                                DatabaseHelper.columnDescription:
+                                    popularProduct.description,
+                                DatabaseHelper.columnPrice:
+                                    popularProduct.price,
+                              });
+                            }
+                          } on Exception catch (e) {
+                            print(e.toString());
+                          } finally {
+                            setState(() {
+                              popularProduct.isFavourite =
+                                  !popularProduct.isFavourite;
+                              print(popularProduct.isFavourite);
+                            });
+                          }
                         },
                         child: Align(
                           alignment: Alignment.topRight,

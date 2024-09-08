@@ -2,6 +2,11 @@
 class Assets {
   Assets._();
 
+  static const String organicProductTree1 = 'images/organic_product/tree1.png';
+  static const String organicProductTree2 = 'images/organic_product/tree2.png';
+  static const String organicProductTree3 = 'images/organic_product/tree3.png';
+  static const String organicProductTree4 = 'images/organic_product/tree4.png';
+  static const String organicProductTree5 = 'images/organic_product/tree5.png';
   static const String popularProductTree1 = 'images/popular_product/tree1.png';
   static const String popularProductTree2 = 'images/popular_product/tree2.png';
   static const String popularProductTree3 = 'images/popular_product/tree3.png';

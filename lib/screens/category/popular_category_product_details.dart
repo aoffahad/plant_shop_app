@@ -2,11 +2,34 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:plan_shop_app/screens/category/popular_product_class.dart';
+import 'package:plan_shop_app/models/popular_product_class.dart';
 
-class PopularCategoryProductDetails extends StatelessWidget {
+class PopularCategoryProductDetails extends StatefulWidget {
   final Product product;
   PopularCategoryProductDetails({super.key, required this.product});
+
+  @override
+  State<PopularCategoryProductDetails> createState() =>
+      _PopularCategoryProductDetailsState();
+}
+
+class _PopularCategoryProductDetailsState
+    extends State<PopularCategoryProductDetails> {
+  int quantity = 1;
+
+  void increment() {
+    setState(() {
+      quantity++;
+    });
+  }
+
+  void decrement() {
+    setState(() {
+      if (quantity > 0) {
+        quantity--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +102,9 @@ class PopularCategoryProductDetails extends StatelessWidget {
         ),
         Center(
             child: Hero(
-          tag: product.image,
+          tag: widget.product.image,
           child: Image.asset(
-            product.image,
+            widget.product.image,
             width: 320,
             fit: BoxFit.cover,
           ),
@@ -119,7 +142,7 @@ class PopularCategoryProductDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              product.title,
+              widget.product.title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
             ),
             Container(
@@ -131,7 +154,7 @@ class PopularCategoryProductDetails extends StatelessWidget {
                   ),
                   color: Colors.green),
               child: Text(
-                "\$${product.price}",
+                "\$${widget.product.price}",
                 style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -153,7 +176,7 @@ class PopularCategoryProductDetails extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(right: 15),
             child: Text(
-              product.description,
+              widget.product.description,
               style: TextStyle(fontSize: 16),
             )),
         const SizedBox(
@@ -164,18 +187,32 @@ class PopularCategoryProductDetails extends StatelessWidget {
           children: [
             Row(
               children: [
-                OutlinedButton(onPressed: () {}, child: Icon(Icons.remove)),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        decrement();
+                        print(quantity);
+                      });
+                    },
+                    child: Icon(Icons.remove)),
                 const SizedBox(
                   width: 15,
                 ),
-                const Text(
-                  "1",
+                Text(
+                  quantity.toString(),
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   width: 15,
                 ),
-                OutlinedButton(onPressed: () {}, child: Icon(Icons.add)),
+                OutlinedButton(
+                    onPressed: () {
+                      setState(() {
+                        increment();
+                        print(quantity);
+                      });
+                    },
+                    child: Icon(Icons.add)),
               ],
             ),
             Padding(
